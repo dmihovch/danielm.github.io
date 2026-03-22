@@ -1,20 +1,42 @@
-#ysap {
-    border-radius: 10px;
-    border-width: 10px;
-}
-
 body {
-    background-color: #948d56;
+    background-color: darkslateblue;
+	margin:0;
+	overflow: hidden;
+	font-family: 'Ubuntu', sans-serif;
+    color: white;
+
 }
 
-#term-wrap {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: black;
-    height: 90dvh;
-    width: 90dvw;
+#leia-salute-wrap{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	flex-wrap: wrap;
+	gap: 2rem;
 
-    border-radius: 5px;
+	
 }
+
+#salutation-wrap{
+
+	text-align: center;
+
+}
+
+#leia-cute-wrap img{
+	border: 4px solid white;
+	max-width: 100%;
+	width: 20dvw;
+	height: auto;
+}
+
+#pets-wrap {
+	display:flex;
+	justify-content: center;
+	align-items:center;
+	height: 10dvh;
+	width: 10dvw;
+	gap: 2dvi;
+}
+
