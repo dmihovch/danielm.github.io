@@ -2,20 +2,55 @@
 #include <limits.h>
 #include <stdio.h>
 
-void printArr(int* arr, int n, int piv, int piv_val, int front, int back)
+void printArr(int* arr, int istart, int iend)
 {
-	
-	for(int i = 0; i<n; i++)
+	putchar('\n');
+	for(int i = istart; i<=iend; i++)
 	{
-		printf("%d\n", arr[i]);
+		printf("idx: %d, val: %d\n",i, arr[i]);
 	}
-
-	printf("\nf: %d\nb: %d\npiv: %d\npiv_val: %d\n", front, back, piv, piv_val);
-
+	putchar('\n');
 
 }
 
-void quick_sort(int* arr, int len, int istart, int iend);
+
+
+void quick_sort(int* arr, int len, int istart, int iend)
+{
+	if(len <= 1) return;
+	
+	int pivot = arr[(len/2) + istart];
+	int swap = iend;
+	int tmp;
+	for(int i = iend; i >= istart; i--)
+	{
+		if(arr[i] > pivot)
+		{
+			tmp = arr[i];
+			arr[i] = arr[swap];
+			arr[swap] = tmp;
+			// arr[i] ^= arr[swap];
+			// arr[swap] ^= arr[i];
+			// arr[i] ^= arr[swap];
+			swap--;
+		}
+	}
+	tmp = arr[istart];
+	arr[istart] = arr[swap];
+	arr[swap] = tmp;
+	
+	// arr[istart] ^= arr[swap];
+	// arr[swap] ^= arr[istart];
+	// arr[istart] ^= arr[swap];
+
+
+	printArr(arr,istart,iend);
+	quick_sort(arr,len/2,istart,istart+(len/2));
+	quick_sort(arr,len/2,istart+(len/2)+1,iend);
+
+}	
+
+	
 
 
 #define LENGTH 10
@@ -23,39 +58,16 @@ int main(int argc, char* argv[])
 {
 	srand(1);
 
-	int raw_arr[LENGTH];
-	for(int i = 0; i<LENGTH; i++)
-	{
-		raw_arr[i] = rand()%LENGTH;
-	}
-
 	int arr[LENGTH];
-	int front = 0;
-	int back = LENGTH-1;
-	int pivot_idx = LENGTH/2;
-	int pivot = raw_arr[pivot_idx];
-	arr[pivot_idx] = pivot;
-
 	for(int i = 0; i<LENGTH; i++)
 	{
-		if(i == pivot_idx) continue;
-
-		if(raw_arr[i] <= pivot)
-		{
-			arr[front] = raw_arr[i];
-			front++;
-		}
-		else {
-			arr[back] = raw_arr[i];
-			back--;
-		}
+		arr[i] = rand()%LENGTH;
 	}
 
-	front--;
-	back++;
+
+	quick_sort(arr,LENGTH,0,LENGTH-1);
 
 
-	printArr(arr,LENGTH,pivot_idx,pivot,front,back);
 
 
 	
