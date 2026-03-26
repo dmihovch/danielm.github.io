@@ -4,34 +4,36 @@
 
 void printArr(int* arr, int istart, int iend)
 {
-	putchar('\n');
 	for(int i = istart; i<=iend; i++)
 	{
-		printf("idx: %d, val: %d\n",i, arr[i]);
+		printf("idx = %d, val = %d\n",i, arr[i]);
 	}
-	putchar('\n');
 
 }
 
 
+int quick_sort_calls = 0;
 
 void quick_sort(int* arr, int len, int istart, int iend)
 {
+	quick_sort_calls++;
+	printf("\n===== %d QUICK SORT CALL =====\n",quick_sort_calls);
+
 	if(len <= 1) return;
 	
 	int pivot = arr[(len/2) + istart];
+	printArr(arr,istart,iend);
+	printf("pivot = %d\n",pivot);
+
 	int swap = iend;
 	int tmp;
-	for(int i = iend; i >= istart; i--)
+	for(int i = istart; i <= iend; i++)
 	{
 		if(arr[i] > pivot)
 		{
 			tmp = arr[i];
 			arr[i] = arr[swap];
 			arr[swap] = tmp;
-			// arr[i] ^= arr[swap];
-			// arr[swap] ^= arr[i];
-			// arr[i] ^= arr[swap];
 			swap--;
 		}
 	}
@@ -39,11 +41,7 @@ void quick_sort(int* arr, int len, int istart, int iend)
 	arr[istart] = arr[swap];
 	arr[swap] = tmp;
 	
-	// arr[istart] ^= arr[swap];
-	// arr[swap] ^= arr[istart];
-	// arr[istart] ^= arr[swap];
-
-
+	printf("post sorting:\n");
 	printArr(arr,istart,iend);
 	quick_sort(arr,len/2,istart,istart+(len/2));
 	quick_sort(arr,len/2,istart+(len/2)+1,iend);
@@ -67,6 +65,7 @@ int main(int argc, char* argv[])
 
 	quick_sort(arr,LENGTH,0,LENGTH-1);
 
+	printArr(arr,0,9);
 
 
 
