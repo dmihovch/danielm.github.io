@@ -4,11 +4,23 @@
 
 void printArr(int* arr, int istart, int iend)
 {
+	putchar('\n');
 	for(int i = istart; i<=iend; i++)
 	{
-		printf("idx = %d, val = %d\n",i, arr[i]);
+		if(i == istart)
+		{
+			printf("{ ");
+		}
+		if(i!=iend)
+		{
+			printf("%d, ", arr[i]);
+		}
+		if(i == iend)
+		{
+			printf("%d }", arr[i]);
+		}
 	}
-
+	putchar('\n');
 }
 
 
@@ -17,63 +29,71 @@ int quick_sort_calls = 0;
 void quick_sort(int* arr, int len, int istart, int iend)
 {
 	quick_sort_calls++;
-	printf("\n===== %d QUICK SORT CALL =====\n",quick_sort_calls);
 
 	if(len <= 1) return;
 	
-	int pivot = arr[(len/2) + istart];
-	printArr(arr,istart,iend);
-	printf("pivot = %d\n",pivot);
+	int pivot = arr[iend];
 
-	int swap = iend;
+	int probe = istart;
+	int swap = istart-1;
 	int tmp;
-	for(int i = istart; i <= iend; i++)
+	while(probe < iend)
 	{
-		if(arr[i] > pivot)
+
+		if(arr[probe] < pivot)
 		{
-			tmp = arr[i];
-			arr[i] = arr[swap];
+			swap++;
+			tmp = arr[probe];
+			arr[probe] = arr[swap];
 			arr[swap] = tmp;
-			swap--;
+			probe++;
+		}
+		else{
+			probe++;
 		}
 	}
-	tmp = arr[istart];
-	arr[istart] = arr[swap];
-	arr[swap] = tmp;
-	
-	printf("post sorting:\n");
-	printArr(arr,istart,iend);
-	quick_sort(arr,len/2,istart,istart+(len/2));
-	quick_sort(arr,len/2,istart+(len/2)+1,iend);
+	int partition_idx = swap+1;
+	tmp = arr[probe];
+	arr[probe] = arr[partition_idx];
+	arr[partition_idx] = tmp;
+	int front_end = partition_idx-1;
+	int back_start = partition_idx+1;
+	quick_sort(arr,(front_end - istart) + 1,istart,front_end);
+	quick_sort(arr,(iend - back_start + 1),back_start,iend);
 
 }	
 
-	
 
-
-#define LENGTH 10
 int main(int argc, char* argv[])
 {
 	srand(1);
 
-	int arr[LENGTH];
-	for(int i = 0; i<LENGTH; i++)
+	if(argc != 2)
 	{
-		arr[i] = rand()%LENGTH;
+		printf("usage: ./qs NUMITEMS\n");
+		return 1;
 	}
 
+	int length = atoi(argv[1]);
 
-	quick_sort(arr,LENGTH,0,LENGTH-1);
+	int* arr = malloc(sizeof(int)*length);
+	if(arr == NULL)
+	{
+		return -1;
+	}
 
-	printArr(arr,0,9);
+	for(int i = 0; i<length; i++)
+	{
+		arr[i] = rand()%length;
+	}
 
+	printArr(arr,0,length-1);
 
+	quick_sort(arr,length,0,length-1);
 
-	
+	printArr(arr,0,length-1);
 
-
-
-
+	free(arr);
 	return 0;
 }
 
